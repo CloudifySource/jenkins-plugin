@@ -12,36 +12,37 @@ import hudson.tasks.BuildStepMonitor;
 import hudson.tasks.Publisher;
 import hudson.tasks.Recorder;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.sf.json.JSONObject;
 
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.cloudifysource.dsl.rest.request.InvokeCustomCommandRequest;
-import org.cloudifysource.dsl.rest.response.InvokeServiceCommandResponse;
 import org.cloudifysource.restclient.RestClient;
 import org.cloudifysource.restclient.exceptions.RestClientException;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.StaplerRequest;
 
+/**
+ * 
+ * invoke cloudify custom command with the flowing parameters accessKey,
+ * secretKey , buketname and fileName the command should use this parameter to
+ * download file from S3
+ * 
+ * @author Shadi Massalha
+ * 
+ */
+@SuppressWarnings("unchecked")
 public class CloudifyCustomCommandInvoker extends Recorder implements
 		Describable<Publisher> {
 
 	@Extension
 	public static final DescriptorImpl DESCRIPTOR = new DescriptorImpl();
-
-	private static final String COMMNAD = "GS_USM_CommandName";
-	private static final String FILE_NAME = "GS_USM_Command_Parameters0";
-	private static final String FILE_CONTENT = "GS_USM_Command_Parameters1";
 
 	private String url;
 	private String service;
@@ -50,7 +51,7 @@ public class CloudifyCustomCommandInvoker extends Recorder implements
 	private String user;
 	private String password;
 	private String apiVersion;
-	private String path;
+	private String fileName;
 	private String accessKey;
 	private String secretKey;
 	private String buketName;
@@ -58,8 +59,8 @@ public class CloudifyCustomCommandInvoker extends Recorder implements
 	@DataBoundConstructor
 	public CloudifyCustomCommandInvoker(String url, String application,
 			String service, String commnad, String user, String password,
-			String apiVersion, String path, String accessKey, String secretKey,
-			String buketName) {
+			String apiVersion, String fileName, String accessKey,
+			String secretKey, String buketName) {
 		this.url = url;
 		this.application = application;
 		this.service = service;
@@ -67,7 +68,7 @@ public class CloudifyCustomCommandInvoker extends Recorder implements
 		this.user = user;
 		this.password = password;
 		this.apiVersion = apiVersion;
-		this.path = path;
+		this.fileName = fileName;
 		this.accessKey = accessKey;
 		this.secretKey = secretKey;
 		this.buketName = buketName;
@@ -83,19 +84,9 @@ public class CloudifyCustomCommandInvoker extends Recorder implements
 		if (build.getResult() == Result.FAILURE)
 			return true;
 
-		log(listener.getLogger(), "detecting " + build.getArtifacts().size()
-				+ " artifact for upload.");
+		log(listener.getLogger(), "invoke command " + command);
 
-		File file = new File(path);
-
-		log(listener.getLogger(), "uploading artifact " + file.getName()
-				+ "...");
-
-		String encoded = encodeArtifactAsBase64(file);
-
-		log(listener.getLogger(), "invoke upload ...");
-
-		return invokeCustomCommand(file.getName(), encoded, listener);
+		return invokeCustomCommand(listener);
 	}
 
 	protected void log(final PrintStream logger, final String message) {
@@ -103,8 +94,8 @@ public class CloudifyCustomCommandInvoker extends Recorder implements
 				.getDisplayName()) + " " + message);
 	}
 
-	private boolean invokeCustomCommand(String fileName, String encoded,
-			BuildListener listener) throws MalformedURLException {
+	private boolean invokeCustomCommand(BuildListener listener)
+			throws MalformedURLException {
 		boolean success = false;
 		try {
 
@@ -115,16 +106,18 @@ public class CloudifyCustomCommandInvoker extends Recorder implements
 
 			InvokeCustomCommandRequest request = new InvokeCustomCommandRequest();
 
-			Map<String, Object> parameters = new HashMap<String, Object>();
-			parameters.put(COMMNAD, command);
-			parameters.put(FILE_NAME, fileName);
-			parameters.put(FILE_CONTENT, encoded);
+			request.setCommandName(command);
 
-			// TODO: check this phase
-			//request.setParameters(parameters);
+			List<String> parameters = new ArrayList<String>();
 
-			InvokeServiceCommandResponse response = restClient
-					.invokeServiceCommand(application, service, request);
+			parameters.add(accessKey);
+			parameters.add(secretKey);
+			parameters.add(buketName);
+			parameters.add(fileName);
+
+			request.setParameters(parameters);
+
+			restClient.invokeServiceCommand(application, service, request);
 
 			success = true;
 
@@ -135,36 +128,6 @@ public class CloudifyCustomCommandInvoker extends Recorder implements
 		}
 
 		return success;
-	}
-
-	@SuppressWarnings("resource")
-	private String encodeArtifactAsBase64(File file) throws IOException {
-		InputStream is = new FileInputStream(file);
-
-		long length = file.length();
-		if (length > Integer.MAX_VALUE) {
-			// File is too large
-		}
-
-		byte[] bytes = new byte[(int) length];
-
-		int offset = 0;
-		int numRead = 0;
-		while (offset < bytes.length
-				&& (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
-			offset += numRead;
-		}
-
-		if (offset < bytes.length) {
-			throw new IOException("Could not completely read file "
-					+ file.getName());
-		}
-
-		is.close();
-
-		byte[] encoded = Base64.encodeBase64(bytes);
-
-		return new String(encoded);
 	}
 
 	public BuildStepMonitor getRequiredMonitorService() {
@@ -200,8 +163,8 @@ public class CloudifyCustomCommandInvoker extends Recorder implements
 		return apiVersion;
 	}
 
-	public String getPath() {
-		return path;
+	public String getFileName() {
+		return fileName;
 	}
 
 	public String getAccessKey() {
@@ -247,7 +210,7 @@ public class CloudifyCustomCommandInvoker extends Recorder implements
 			String _user = formData.getString("user");
 			String _password = formData.getString("password");
 			String _apiVersion = formData.getString("apiVersion");
-			String _path = formData.getString("path");
+			String _path = formData.getString("fileName");
 
 			String _accessKey = formData.getString("accessKey");
 			String _secretKey = formData.getString("secretKey");
