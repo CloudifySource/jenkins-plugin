@@ -54,13 +54,13 @@ public class CloudifyCustomCommandInvoker extends Recorder implements
 	private String fileName;
 	private String accessKey;
 	private String secretKey;
-	private String buketName;
+	private String bucketName;
 
 	@DataBoundConstructor
 	public CloudifyCustomCommandInvoker(String url, String application,
 			String service, String commnad, String user, String password,
 			String apiVersion, String fileName, String accessKey,
-			String secretKey, String buketName) {
+			String secretKey, String bucketName) {
 		this.url = url;
 		this.application = application;
 		this.service = service;
@@ -71,7 +71,7 @@ public class CloudifyCustomCommandInvoker extends Recorder implements
 		this.fileName = fileName;
 		this.accessKey = accessKey;
 		this.secretKey = secretKey;
-		this.buketName = buketName;
+		this.bucketName = bucketName;
 	}
 
 	@Override
@@ -112,7 +112,7 @@ public class CloudifyCustomCommandInvoker extends Recorder implements
 
 			parameters.add(accessKey);
 			parameters.add(secretKey);
-			parameters.add(buketName);
+			parameters.add(bucketName);
 			parameters.add(fileName);
 
 			request.setParameters(parameters);
@@ -175,8 +175,8 @@ public class CloudifyCustomCommandInvoker extends Recorder implements
 		return secretKey;
 	}
 
-	public String getBuketName() {
-		return buketName;
+	public String getBucketName() {
+		return bucketName;
 	}
 
 	public static final class DescriptorImpl extends
@@ -214,11 +214,11 @@ public class CloudifyCustomCommandInvoker extends Recorder implements
 
 			String _accessKey = formData.getString("accessKey");
 			String _secretKey = formData.getString("secretKey");
-			String _buketName = formData.getString("buketName");
+			String _bucketName = formData.getString("bucketName");
 
 			return new CloudifyCustomCommandInvoker(_url, _application,
 					_service, _command, _user, _password, _apiVersion, _path,
-					_accessKey, _secretKey, _buketName);
+					_accessKey, _secretKey, _bucketName);
 		}
 	}
 }

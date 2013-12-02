@@ -30,7 +30,7 @@
     <f:textbox />
   </f:entry>
   
-  <f:entry title="Password" field="password">
+  <f:entry title="Password" field="password">    
     <f:textbox />
   </f:entry>
   
@@ -42,15 +42,16 @@
     <f:textbox />
   </f:entry>
   
-    <f:entry title="Access key" field="accessKey">
+  <f:entry title="Access key" field="accessKey">
     <f:textbox />
   </f:entry>
   
-    <f:entry title="Secret Key" field="secretKey">
+  <f:entry title="Secret Key" field="secretKey">    
     <f:textbox />
   </f:entry>
   
-    <f:entry title="Buket Name" field="buketName">
+  <f:entry title="Bucket Name" field="bucketName">
     <f:textbox />
   </f:entry>
+
 </j:jelly>
