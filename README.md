@@ -14,8 +14,8 @@ Installing
 ==========
 1. open jenkins management in browser `http://<your server address>/jenkins`
 2. click `Manage Jenkins` link at the left pane ![step 1](/readme/step1.png "Manage Jenkins")
-3. click `Manage Plugins` link
-4. click on `Advanced` tab
+3. click `Manage Plugins` link ![step 2](/readme/step2.png "Manage Plugins")
+4. click on `Advanced` tab ![step 3](/readme/step3.png "Advanced")
 5. under "Upload Plugin" section click `Choose file` button then click `Upload` button
 6. wait while an installation is done
 
