@@ -27,3 +27,10 @@ Installing
 
 Usage
 =====
+
+### S3 plugin Global configuration
+
+1. after installing S3 plugin successfully will add configuration section at `Manage Jenkins > Configure System` 
+2. 
+
+### Cloudify custom command
