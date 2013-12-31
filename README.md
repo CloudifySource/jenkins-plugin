@@ -27,10 +27,14 @@ Installing
 
 Usage
 =====
+* Go to the jenkins start page and create `new job` of type `Build a maven2/3 project`
 
-#### * S3 plugin Global configuration
+* #### S3 plugin Global configuration
 
 1. after installing S3 plugin successfully will add configuration section at `Manage Jenkins > Configure System` 
 2. fill profile fields under the Amazon S3 profiles ![step 8](/readme/step8.png)
 
-#### * Cloudify custom command
+* #### Cloudify custom command invoker
+
+1. click the job name link and then click `Configure` at the left pane
+2. scroll to `Post-build Actions` section add the following actions by selecting from the `Add post-build action` ![step 9](/readme/step9.png)
