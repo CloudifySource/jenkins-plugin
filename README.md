@@ -18,7 +18,12 @@ Installing
 4. click on `Advanced` tab ![step 3](/readme/step3.png "Advanced")
 5. under "Upload Plugin" section click `Choose file` button then click `Upload` button ![step 4](/readme/step4.png)
 6. wait while an installation is done ![step 5](/readme/step5.png) ![step 6](/readme/step6.png)
-7. verify that the plugin is presented in the `Installed` tab
+7. verify that the plugin is presented in the `Installed` tab ![step 7](/readme/step7.png)
+
+> Note: for this sample we will use S3 as extenal storage to keep the generated war so, to install S3 
+> * click the `Available` tab at the Plugin manager
+> * type at the filter form `S3`
+> * check `S3 plugin` and click `install without restart` button 
 
 Usage
 =====
