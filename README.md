@@ -28,9 +28,9 @@ Installing
 Usage
 =====
 
-### S3 plugin Global configuration
+#### * S3 plugin Global configuration
 
 1. after installing S3 plugin successfully will add configuration section at `Manage Jenkins > Configure System` 
-2. 
+2. fill profile fields under the Amazon S3 profiles ![step 8](/readme/step8.png)
 
-### Cloudify custom command
+#### * Cloudify custom command
