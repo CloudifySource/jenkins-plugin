@@ -37,4 +37,11 @@ Usage
 * #### Cloudify custom command invoker
 
 1. click the job name link and then click `Configure` at the left pane
-2. scroll to `Post-build Actions` section add the following actions by selecting from the `Add post-build action` ![step 9](/readme/step9.png)
+2. scroll to `Post-build Actions` section add the following actions by selecting from the `Add post-build action`
+
+> Note: important to select actions at the following order:
+> * select `Archive the artifacts`
+> * select `Publish artifacts to S3 Bucket`
+> * select `Cloudify custom command invoker`
+
+![step 9](/readme/step9.png)
