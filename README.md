@@ -1,7 +1,13 @@
 jenkins-plugin
 ==============
-
 A Jenkins plugin that invokes a cloudify custom command with parameters related to the build
+
+The example depend on other plugins: 
+
+1. archive plugin help archiving WAR 
+2. S3 plugin to publish WAR file to external storage.
+
+The `recipes` directory include a simple application `artifact.zip`, this application include custom command named `downloadFromS3`. extract the `artifact.zip` application to `<cloudify install dir>/recipes/apps` then install install `artifact` application `install-application artifact`
 
 Building
 ========
