@@ -51,3 +51,5 @@ Usage
 > * select `Cloudify custom command invoker`
 
 ![step 9](/readme/step9.png)
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/CloudifySource/jenkins-plugin/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
